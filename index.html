@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="体育场馆预约记录">
+  <meta name="format-detection" content="telephone=no">
+  <title>体育场馆预约记录</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app">
+    <section class="screen manager-screen active" id="homeScreen">
+      <header class="manager-hero">
+        <div class="app-mark">馆</div>
+        <div class="hero-copy"><h1>体育场馆预约记录</h1><p>离线保存在本机 · 演示工具</p></div>
+      </header>
+      <div class="home-body">
+        <div class="safety-banner"><b>本地演示 · 蒙混过关</b><p>本应用仅用于个人离线记录与界面演示，是天才李书畅的奇思妙想，切勿随意传播</p></div>
+        <button class="home-action primary" data-page="createScreen"><span class="action-icon">＋</span><span><b>新增预约</b><small>填写场地与预约时间</small></span><i>›</i></button>
+        <button class="home-action" data-page="manageScreen"><span class="action-icon">☷</span><span><b>管理历史预约</b><small id="recordCount">0 条预约记录</small></span><i>›</i></button>
+        <button class="home-action" id="openDisplay"><span class="action-icon play">▶</span><span><b>进入展示页面</b><small>查看预约历史与发送消息</small></span><i>›</i></button>
+        <div class="privacy-note">
+          <b>本地离线</b>
+          <p>预约和聊天记录仅保存在这台手机中。建议定期导出备份；清除 Safari 网站数据或移除网页 App 可能会删除记录。</p>
+          <div class="backup-actions">
+            <button type="button" id="exportBackup">导出备份</button>
+            <button type="button" id="importBackup">导入恢复</button>
+          </div>
+          <input id="backupFile" class="visually-hidden" type="file" accept="application/json,.json">
+        </div>
+      </div>
+    </section>
+
+    <section class="screen manager-screen" id="createScreen">
+      <header class="sub-header"><button class="back manager-back">‹</button><h2 id="formTitle">新增预约</h2><span></span></header>
+      <form id="appointmentForm" class="form-card">
+        <input type="hidden" id="editId">
+        <label>场地名称<input id="venue" type="text" placeholder="例如：深圳校区健身房-场地1" required></label>
+        <label>预约日期<input id="bookingDate" type="date" required></label>
+        <label>预约时间<input id="bookingTime" type="time" required></label>
+        <label>消息显示时间<input id="messageTime" type="datetime-local" required></label>
+        <p class="format-tip">卡片正文固定为：您好！您已成功预定场地。场地名称：[场地名称]，预定时间：[日期] [时间]</p>
+        <button type="submit" class="save-button">保存预约</button>
+      </form>
+    </section>
+
+    <section class="screen manager-screen" id="manageScreen">
+      <header class="sub-header"><button class="back manager-back">‹</button><h2>管理历史预约</h2><span></span></header>
+      <div id="manageList" class="manage-list"></div>
+    </section>
+
+    <section class="screen display-screen" id="displayScreen">
+      <header class="chat-header">
+        <button class="chat-back" id="exitDisplay" aria-label="返回"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4.5M10.5 5.5 4 12l6.5 6.5"/></svg></button>
+        <h1>体育场馆预订系统</h1>
+        <button class="more" aria-label="更多"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="18" r="1.7"/></svg></button>
+      </header>
+      <div id="chatScroller" class="chat-scroller">
+        <div id="timeline" class="timeline"></div>
+      </div>
+      <form id="composer" class="composer">
+        <button type="button" class="round-icon voice" aria-label="语音"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.2" cy="12" r="1.15" fill="currentColor" stroke="none"/><path d="M10.2 8.4c2 2 2 5.2 0 7.2M14.2 5.2c3.7 3.8 3.7 9.8 0 13.6"/></svg></button>
+        <input id="chatInput" autocomplete="off" enterkeyhint="send" placeholder="发消息或按住…">
+        <button type="button" class="round-icon face" aria-label="表情"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="8.1" cy="8.8" rx="1.25" ry="1.75" fill="currentColor" stroke="none"/><ellipse cx="15.9" cy="8.8" rx="1.25" ry="1.75" fill="currentColor" stroke="none"/><path class="smile-line" d="M6.8 13.4c.6 5 9.8 5 10.4 0"/></svg></button>
+        <button type="submit" class="round-icon plus" id="sendButton" aria-label="更多"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      </form>
+    </section>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
