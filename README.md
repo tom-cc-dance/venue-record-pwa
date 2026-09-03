@@ -2,6 +2,8 @@
 
 这是为 iPhone 15 / iOS 26.1 适配的免费离线网页 App。
 
+在线安装地址：<https://tom-cc-dance.github.io/venue-record-pwa/>
+
 ## 已包含
 
 - 管理首页、新增预约、管理历史预约和展示页面
