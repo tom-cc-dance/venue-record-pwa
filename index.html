@@ -8,11 +8,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="体育场馆预约记录">
   <meta name="format-detection" content="telephone=no">
+  <meta name="app-version" content="1.1.0">
   <title>体育场馆预约记录</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="portal.css">
 </head>
 <body>
   <main id="app">
@@ -33,6 +35,7 @@
             <button type="button" id="exportBackup">导出备份</button>
             <button type="button" id="importBackup">导入恢复</button>
           </div>
+          <p id="offlineStatus" aria-live="polite">PWA 1.1.0 · 正在准备离线资源…</p>
           <input id="backupFile" class="visually-hidden" type="file" accept="application/json,.json">
         </div>
       </div>
@@ -71,6 +74,97 @@
         <button type="button" class="round-icon face" aria-label="表情"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="8.1" cy="8.8" rx="1.25" ry="1.75" fill="currentColor" stroke="none"/><ellipse cx="15.9" cy="8.8" rx="1.25" ry="1.75" fill="currentColor" stroke="none"/><path class="smile-line" d="M6.8 13.4c.6 5 9.8 5 10.4 0"/></svg></button>
         <button type="submit" class="round-icon plus" id="sendButton" aria-label="更多"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       </form>
+    </section>
+    <section class="screen portal-screen" id="portalScreen" aria-label="中山大学体育场馆预订系统">
+      <header class="chat-header portal-header">
+        <button type="button" class="chat-back" id="exitPortal" aria-label="返回预约消息"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4.5M10.5 5.5 4 12l6.5 6.5"/></svg></button>
+        <h1>中山大学体育场馆预订系统</h1>
+        <button type="button" class="more" data-visual-only aria-label="更多"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="18" r="1.7"/></svg></button>
+      </header>
+      <div class="portal-load-progress" aria-hidden="true"></div>
+      <div class="portal-loading-mask" id="portalLoadingMask" role="status" aria-label="页面加载中" aria-hidden="true" hidden>
+        <svg class="portal-loading-spinner" viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="21"/></svg>
+      </div>
+      <div class="portal-scroller" id="portalScroller">
+        <div class="university-bar">
+          <img class="university-logo" src="campus/university-logo.png" alt="中山大学 SUN YAT-SEN UNIVERSITY" width="188" height="55">
+          <div class="university-actions">
+            <button type="button" class="account-button" data-visual-only>我的账号</button>
+            <button type="button" class="logout-button" data-visual-only>登出</button>
+          </div>
+        </div>
+        <div class="portal-content">
+          <section class="portal-panel campus-panel" aria-labelledby="campusHeading">
+            <h2 id="campusHeading">校区选择</h2>
+            <div class="campus-list">
+              <button type="button" class="campus-tile" data-campus="south" data-visual-only>
+                <img src="campus/south.png" alt="广州校区南校园" width="1800" height="1200">
+                <span class="campus-label"><span>广州校区南校园</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></span>
+              </button>
+              <button type="button" class="campus-tile" data-campus="north" data-visual-only>
+                <img src="campus/north.png" alt="广州校区北校园" width="2048" height="1365">
+                <span class="campus-label"><span>广州校区北校园</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></span>
+              </button>
+              <button type="button" class="campus-tile" data-campus="east" data-visual-only>
+                <img src="campus/east.png" alt="广州校区东校园" width="709" height="441">
+                <span class="campus-label"><span>广州校区东校园</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></span>
+              </button>
+              <button type="button" class="campus-tile" data-campus="shenzhen" data-visual-only>
+                <img src="campus/shenzhen.png" alt="深圳校区" width="1920" height="1920">
+                <span class="campus-label"><span>深圳校区</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></span>
+              </button>
+              <button type="button" class="campus-tile" data-campus="zhuhai" data-visual-only>
+                <img src="campus/zhuhai.png" alt="珠海校区" width="1200" height="772">
+                <span class="campus-label"><span>珠海校区</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></span>
+              </button>
+              <button type="button" class="campus-tile reservations-tile" data-scroll-to="portalReservations">
+                <svg class="reservation-art" viewBox="0 0 600 326" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                  <rect width="600" height="326" fill="#e2ece5"/>
+                  <ellipse cx="637" cy="165" rx="292" ry="294" fill="#c5dbcf"/>
+                  <g fill="none" stroke="#006334" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M445 84h129c13 0 13 20 0 20h-11M450 104h-9c-12 0-12-20 0-20h16v165l18-17 18 17 19-17 18 17 18-17 15 17V84"/>
+                    <path d="M478 122h68m-68 24h42m-42 23h65m-65 24h52"/>
+                  </g>
+                </svg>
+                <span class="campus-label"><span>我的预约</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></span>
+              </button>
+            </div>
+          </section>
+          <section class="portal-panel quick-panel" aria-labelledby="quickHeading">
+            <h2 id="quickHeading">快速预约</h2>
+            <div class="quick-fields">
+              <button type="button" class="portal-field" data-field="campus" data-visual-only><span>选择校区</span><span class="select-caret" aria-hidden="true"></span></button>
+              <button type="button" class="portal-field" data-field="venue-type" disabled><span>选择场地类型</span><span class="select-caret" aria-hidden="true"></span></button>
+              <div class="portal-date-row"><svg class="calendar-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v17H5zM5 9h14M8 2v4m8-4v4"/><path class="calendar-day" d="M10 12h5v5h-5z"/></svg><button type="button" class="portal-field" data-field="date" data-visual-only>选择日期</button></div>
+              <button type="button" class="portal-field" data-field="slot" disabled><span>选择时间段</span><span class="select-caret" aria-hidden="true"></span></button>
+              <button type="button" class="portal-book-button" disabled>立即预约</button>
+            </div>
+          </section>
+          <section class="portal-reservations" id="portalReservations" aria-labelledby="reservationsHeading">
+            <h2 id="reservationsHeading">我的预约</h2>
+            <p class="no-reservations">暂无预约</p>
+            <button type="button" class="portal-text-link" data-visual-only>查看所有预定</button>
+          </section>
+          <section class="portal-payments" aria-labelledby="paymentsHeading">
+            <h2 id="paymentsHeading">我的支付</h2>
+            <div class="payment-item">
+              <p>深圳校区健身房 2026-08-16 18:00 金额：10.00</p>
+              <button type="button" class="payment-button" data-visual-only>支付</button>
+            </div>
+          </section>
+          <section class="portal-notices" aria-labelledby="noticesHeading">
+            <h2 id="noticesHeading">通知公告</h2>
+            <div class="notice-list">
+              <button type="button" class="notice-item" data-visual-only><span>2025-09-18 现金支付使用说明</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></button>
+              <button type="button" class="notice-item" data-visual-only><span>2025-09-18 现金支付导图</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></button>
+              <button type="button" class="notice-item" data-visual-only><span>2025-09-18 中山大学体育场馆运动时管理办法（修订）</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></button>
+              <button type="button" class="notice-item" data-visual-only><span>2025-09-18 中山大学体育场馆管理办法</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13 4l8 8-8 8"/></svg></button>
+            </div>
+            <button type="button" class="portal-text-link" data-visual-only>查看所有公告</button>
+          </section>
+        </div>
+        <footer class="portal-footer"><h2>中山大学体育场馆管理与预约系统</h2><p>广东省广州市海珠区新港西路135号</p></footer>
+      </div>
     </section>
   </main>
   <div id="toast" class="toast"></div>
