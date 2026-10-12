@@ -23,7 +23,7 @@
 2. 将本目录中的全部文件和 `icons` 文件夹上传至仓库根目录；不要只上传 ZIP 文件。
 3. 打开仓库的 `Settings` → `Pages`。
 4. 在 `Build and deployment` 中选择 `Deploy from a branch`。
-5. Branch 选择 `main`，目录选择 `/ (root)`，然后保存。
+5. 新仓库可选择 `main`；本项目现有网站实际选择 `gh-pages`，目录为 `/ (root)`。源码更新到 `main` 后，须同时同步现有 `gh-pages` 发布分支。
 6. 等待 GitHub 显示网站地址，通常形如 `https://你的用户名.github.io/venue-record-pwa/`。
 
 ## 安装到 iPhone
